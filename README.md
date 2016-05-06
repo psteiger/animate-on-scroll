@@ -14,7 +14,7 @@ http://www.bitbahia.com.br/
 
 ### npm -- a JavaScript package manager
 
-  npm install animate-on-scroll
+    npm install animate-on-scroll
 
 ### Ruby on Rails Gem
 
@@ -22,11 +22,11 @@ http://www.bitbahia.com.br/
 
 Setup your Gemfile:
 
-  gem 'animate-on-scroll'
+    gem 'animate-on-scroll'
 
 Install it:
 
-  bundle
+    bundle
 
 ## Use examples
 
