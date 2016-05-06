@@ -53,7 +53,9 @@
       AnimateOnScroll.prototype.update = function() {
         var el, v;
         el = this.el;
-        v = this.computeTransformValue();
+        if (this.elIsOnTop() || this.elIsOnBottom()) {
+          v = this.computeTransformValue();
+        }
         if (v != null) {
           if (this.options.fade) {
             $(el).css('opacity', v);
@@ -70,28 +72,32 @@
           ref = this.top_offsets, y_0 = ref[0], y_1 = ref[1];
         } else if (this.elIsOnBottom()) {
           ref1 = this.bottom_offsets, y_0 = ref1[0], y_1 = ref1[1];
+        } else {
+          void 0;
         }
         a = 1 / (y_1 - y_0);
-        x = this.getCurrentElCenter();
+        x = this.getCurrentElOffset().center;
         b = -y_0 / (y_1 - y_0);
         y = a * x + b;
         return Math.min(Math.max(y, 0), 1);
       };
 
-      AnimateOnScroll.prototype.getCurrentElCenter = function() {
+      AnimateOnScroll.prototype.getCurrentElOffset = function() {
         var bounds;
         bounds = $(this.el).get(0).getBoundingClientRect();
-        return (bounds.top + bounds.bottom) / 2;
+        return $.extend(bounds, {
+          center: (bounds.top + bounds.bottom) / 2
+        });
       };
 
       AnimateOnScroll.prototype.elIsOnTop = function() {
         var ref;
-        return (0 <= (ref = this.getCurrentElCenter()) && ref < $(window).height() / 2);
+        return (0 <= (ref = this.getCurrentElOffset().bottom) && ref < $(window).height() / 2);
       };
 
       AnimateOnScroll.prototype.elIsOnBottom = function() {
         var ref;
-        return ($(window).height() / 2 <= (ref = this.getCurrentElCenter()) && ref <= $(window).height());
+        return ($(window).height() / 2 <= (ref = this.getCurrentElOffset().top) && ref <= $(window).height());
       };
 
       return AnimateOnScroll;
