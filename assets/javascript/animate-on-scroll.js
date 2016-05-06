@@ -22,8 +22,12 @@
     };
     AnimateOnScroll = (function() {
       function AnimateOnScroll(el1, options) {
+        var el_center;
         this.el = el1;
+        el_center = $(this.el).innerHeight() / 2;
         this.options = $.extend({}, _defaults, options);
+        this.top_offsets = [this.options.offset_top - el_center, this.options.offset_top + el_center];
+        this.bottom_offsets = [$(window).height() + el_center - this.options.offset_bottom, $(window).height() - el_center - this.options.offset_bottom];
         this._defaults = _defaults;
         this._name = pluginName;
         this.init();
@@ -47,66 +51,49 @@
       };
 
       AnimateOnScroll.prototype.update = function() {
-        if (this.elIsOnTop()) {
-          return this.animateOut();
-        } else if (this.elIsOnBottom()) {
-          return this.animateIn();
+        var el, v;
+        el = this.el;
+        v = this.computeTransformValue();
+        if (v != null) {
+          if (this.options.fade) {
+            $(el).css('opacity', v);
+          }
+          if (this.options.scale3d) {
+            return $(el).css('transform', 'scale3d(' + v + ',' + v + ',' + v + ')');
+          }
         }
       };
 
-      AnimateOnScroll.prototype.get_transform_value = function(y_1, y_0) {
-        var a, b, result, x;
+      AnimateOnScroll.prototype.computeTransformValue = function() {
+        var a, b, ref, ref1, x, y, y_0, y_1;
+        if (this.elIsOnTop()) {
+          ref = this.top_offsets, y_0 = ref[0], y_1 = ref[1];
+        } else if (this.elIsOnBottom()) {
+          ref1 = this.bottom_offsets, y_0 = ref1[0], y_1 = ref1[1];
+        } else {
+          void 0;
+        }
         a = 1 / (y_1 - y_0);
-        x = this.get_el_center();
+        x = this.getCurrentElCenter();
         b = -y_0 / (y_1 - y_0);
-        result = a * x + b;
-        return Math.min(Math.max(result, 0), 1);
+        y = a * x + b;
+        return Math.min(Math.max(y, 0), 1);
       };
 
-      AnimateOnScroll.prototype.get_el_center = function() {
+      AnimateOnScroll.prototype.getCurrentElCenter = function() {
         var bounds;
         bounds = $(this.el).get(0).getBoundingClientRect();
         return (bounds.top + bounds.bottom) / 2;
       };
 
-      AnimateOnScroll.prototype.animate = function(y_1, y_0) {
-        var el, v;
-        el = this.el;
-        v = this.get_transform_value(y_1, y_0);
-        if (this.options.fade) {
-          $(el).css('opacity', v);
-        }
-        if (this.options.scale3d) {
-          return $(el).css('transform', 'scale3d(' + v + ',' + v + ',' + v + ')');
-        }
-      };
-
-      AnimateOnScroll.prototype.animateIn = function() {
-        var el_center, y_0, y_1;
-        el_center = $(this.el).innerHeight() / 2;
-        y_1 = $(window).height() - el_center - this.options.offset_bottom;
-        y_0 = $(window).height() + el_center - this.options.offset_bottom;
-        return this.animate(y_1, y_0);
-      };
-
-      AnimateOnScroll.prototype.animateOut = function() {
-        var el_center, y_0, y_1;
-        el_center = $(this.el).innerHeight() / 2;
-        y_1 = this.options.offset_top + el_center;
-        y_0 = this.options.offset_top - el_center;
-        return this.animate(y_1, y_0);
-      };
-
       AnimateOnScroll.prototype.elIsOnTop = function() {
-        var rect;
-        rect = $(this.el).get(0).getBoundingClientRect();
-        return rect.bottom >= 0 && rect.bottom < $(window).height() / 2;
+        var ref;
+        return (this.top_offsets[0] <= (ref = this.getCurrentElCenter()) && ref <= this.top_offsets[1]);
       };
 
       AnimateOnScroll.prototype.elIsOnBottom = function() {
-        var rect;
-        rect = $(this.el).get(0).getBoundingClientRect();
-        return rect.top > $(window).height() / 2 && rect.top <= $(window).height();
+        var ref;
+        return (this.bottom_offsets[0] >= (ref = this.getCurrentElCenter()) && ref >= this.bottom_offsets[1]);
       };
 
       return AnimateOnScroll;
