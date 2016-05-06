@@ -70,8 +70,6 @@
           ref = this.top_offsets, y_0 = ref[0], y_1 = ref[1];
         } else if (this.elIsOnBottom()) {
           ref1 = this.bottom_offsets, y_0 = ref1[0], y_1 = ref1[1];
-        } else {
-          void 0;
         }
         a = 1 / (y_1 - y_0);
         x = this.getCurrentElCenter();
@@ -88,12 +86,12 @@
 
       AnimateOnScroll.prototype.elIsOnTop = function() {
         var ref;
-        return (this.top_offsets[0] <= (ref = this.getCurrentElCenter()) && ref <= this.top_offsets[1]);
+        return (0 <= (ref = this.getCurrentElCenter()) && ref < $(window).height() / 2);
       };
 
       AnimateOnScroll.prototype.elIsOnBottom = function() {
         var ref;
-        return (this.bottom_offsets[0] >= (ref = this.getCurrentElCenter()) && ref >= this.bottom_offsets[1]);
+        return ($(window).height() / 2 <= (ref = this.getCurrentElCenter()) && ref <= $(window).height());
       };
 
       return AnimateOnScroll;

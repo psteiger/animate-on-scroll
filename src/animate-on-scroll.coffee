@@ -68,8 +68,6 @@ animateOnScroll = ($) ->
         [y_0, y_1] = @top_offsets
       else if @elIsOnBottom()
         [y_0, y_1] = @bottom_offsets
-      else
-        undefined
 
       a = 1 / (y_1 - y_0)
       x = @getCurrentElCenter()
@@ -83,10 +81,10 @@ animateOnScroll = ($) ->
       (bounds.top + bounds.bottom) / 2
 
     elIsOnTop: ->
-      @top_offsets[0] <= @getCurrentElCenter() <= @top_offsets[1]
+       0                      <= @getCurrentElCenter() <  $(window).height() / 2
 
     elIsOnBottom: ->
-      @bottom_offsets[0] >= @getCurrentElCenter() >= @bottom_offsets[1]
+       $(window).height() / 2 <= @getCurrentElCenter() <= $(window).height()
 
   # Plugin wrapper preventing against multiple instantiations.
   $.fn.animateOnScroll = (options) ->
