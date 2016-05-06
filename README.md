@@ -14,24 +14,37 @@ http://www.bitbahia.com.br/
 
 ### npm -- a JavaScript package manager
 
-    npm install animate-on-scroll
+  npm install animate-on-scroll
 
 ### Ruby on Rails Gem
 
-Coming soon:
+(Warning! Not implemented yet.)
 
-    gem 'animate-on-scroll', :git => 'git://github.com/psteiger/animate-on-scroll.git'
+Setup your Gemfile:
 
-## Examples
+  gem 'animate-on-scroll'
+
+Install it:
+
+  bundle
+
+## Use examples
+
+The following code makes all elements with class '.fade-on-scroll' to fade out
+of the screen (with a top offset of 60).
 
     $('.fade-on-scroll').animateOnScroll({
       offset_top: 60,
       fade: true
     });
 
+If we want to scale items with class 'scale3d-on-scroll':
+
     $('.scale3d-on-scroll').animateOnScroll({
       scale3d:true
     });
+
+An item can have multiple classes and effects.
 
 ## Options
 
