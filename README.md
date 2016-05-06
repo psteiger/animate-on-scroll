@@ -1,16 +1,16 @@
 # animate-on-scroll
-JQuery plugin for animating objects as they enter or leave the visible screen.
+JQuery plugin for animating objects as they enter or leave the screen.
 
 Examples:
 
-$('.fade-on-scroll').animateOnScroll {
-  offset_top: 60
-  fade: true
-}
+        $('.fade-on-scroll').animateOnScroll({
+          offset_top: 60,
+          fade: true
+        });
 
-$('.scale3d-on-scroll').animateOnScroll({
-  scale3d:true
-})
+        $('.scale3d-on-scroll').animateOnScroll({
+          scale3d:true
+        });
 
 All options and respective defaults:
 
