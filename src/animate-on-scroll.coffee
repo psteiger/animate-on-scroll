@@ -5,6 +5,7 @@
 ###
 
 animateOnScroll = ($) ->
+
   "use strict"
 
   pluginName = "animateOnScroll"
@@ -91,12 +92,12 @@ animateOnScroll = ($) ->
 
   # Plugin wrapper preventing against multiple instantiations.
   $.fn.animateOnScroll = (options) ->
-      @each ->
-        instance = $.data @, "plugin_" + pluginName
-        if instance
-          $.extend true, instance.options,  options
-        else
-          $.data @, "plugin_" + pluginName, new AnimateOnScroll @, options
+    @each ->
+      instance = $.data @, "plugin_" + pluginName
+      if instance
+        $.extend true, instance.options,  options
+      else
+        $.data @, "plugin_" + pluginName, new AnimateOnScroll @, options
 
   # Prevents CoffeeScript to return a value from plugin wrapper.
   return
@@ -118,12 +119,3 @@ do (plugin = animateOnScroll, window) ->
   # Window globals.
   else
     plugin window.jQuery or window.$
-
-$('.fade-on-scroll').animateOnScroll {
-  offset_top: 60
-  fade: true
-}
-
-$('.scale3d-on-scroll').animateOnScroll({
-  scale3d:true
-})
