@@ -104,11 +104,3 @@
     return
 ) jQuery, window, document
 
-$('.fade-on-scroll').animateOnScroll {
-  offset_top: 60
-  fade: true
-}
-
-$('.scale3d-on-scroll').animateOnScroll({
-  scale3d:true
-})
