@@ -47,4 +47,5 @@ All options and respective defaults:
 ## Web resources
 
 https://www.npmjs.com/package/animate-on-scroll
+
 http://github.com/psteiger/animate-on-scroll
