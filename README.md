@@ -74,8 +74,8 @@ supply our own special range and rotate function:
 
     $('.rotate-on-scroll').animateOnScroll({
       rotate: {
-        enable: true
-        range: [0,360]
+        enable: true,
+        range: [0,360],
         apply_css: (el, v) -> el.css 'transform', 'rotate(' + v + 'deg)'
       }
     });
@@ -89,17 +89,17 @@ An item can have multiple classes and effects.
 All supported options and respective defaults:
 
     fade: {
-      enable: true
-      offset_top: 50
-      offset_bottom: 50
-      range: undefined
+      enable: true,
+      offset_top: 50,
+      offset_bottom: 50,
+      range: undefined,
       apply_css: (el, v) -> el.css 'opacity', v
     }
     scale3d: {
-      enable: true
-      offset_top: undefined
-      offset_bottom: undefined
-      range: undefined
+      enable: true,
+      offset_top: undefined,
+      offset_bottom: undefined,
+      range: undefined,
       apply_css: (el, v) -> el.css 'transform', 'scale3d(' + v + ',' + v + ',' + v + ')'
     }
 
