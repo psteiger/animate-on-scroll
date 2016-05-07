@@ -8,20 +8,21 @@ animateOnScroll = ($) ->
 
   pluginName = "animateOnScroll"
   _defaults =
-    container: "window"
-    event: "scroll"
-    fade: true
-    scale3d: false
-    offset_top: 0
-    offset_bottom: 0
+    fade: {
+      enable: true
+      offset_top: 50
+      offset_bottom: 50
+      apply_css: (el, v) -> el.css 'opacity', v
+    }
+    scale3d: {
+      enable: true
+      apply_css: (el, v) -> el.css 'transform', 'scale3d(' + v + ',' + v + ',' + v + ')'
+    }
 
   class AnimateOnScroll
 
     constructor: (@el, options) ->
-      el_center        = $(@el).innerHeight() / 2
-      @options         = $.extend {}, _defaults, options
-      @top_offsets     = [@options.offset_top - el_center                        , @options.offset_top + el_center]
-      @bottom_offsets  = [$(window).height() + el_center - @options.offset_bottom, $(window).height() - el_center - @options.offset_bottom]
+      @options         = $.extend true, {}, _defaults, options
       @_defaults       = _defaults
       @_name           = pluginName
       @init()
@@ -31,24 +32,26 @@ animateOnScroll = ($) ->
       container = @options.container
       event     = @options.event
 
-      if container == "window" && event == "scroll"
-        $(window).scroll -> self.update()
-      else
-        $(container).on event, -> self.update()
+      $(window).scroll -> self.update()
 
       return self
 
     update: ->
       el = @el
+      el_center = $(el).innerHeight() / 2
+      offsets = [0,0] # top and bottom
+      range = [0,1] # min and max value of transition
 
       if @elIsOnTop() || @elIsOnBottom()
-        v = @computeTransformValue()
-
-      if v?   # computed value is undefined if el not in relevant offset
-        if @options.fade
-          $(el).css 'opacity', v
-        if @options.scale3d
-          $(el).css 'transform', 'scale3d(' + v + ',' + v + ',' + v + ')'
+        for animation, values of @options
+          if values.enable
+            if values.range?
+              range = values.range
+            if values.offset_top? && @elIsOnTop()
+              offsets = [values.offset_top - el_center, values.offset_top + el_center]
+            else if values.offset_bottom && @elIsOnBottom()
+              offsets = [$(window).height() + el_center - values.offset_bottom, $(window).height() - el_center - values.offset_bottom]
+            values.apply_css $(el), @computeTransformValue offsets, range
 
     # here happens the magic.
     #
@@ -57,38 +60,36 @@ animateOnScroll = ($) ->
     # x axis represents the element vertical position on screen.
     # y_0, y_1 are the corresponding x values when y = 0, y = 1 respectively.
     # constants a, b where obtained by solving the system:
-    # (1) 1 = a*y_1 + b
-    # (2) 0 = a*y_0 + b
-    # (3) b = -a*y_0 => (subs 4) => b = -y_0 / (y_1 * y_0);
-    #      y_0 = -b/a (subs 1)
-    #      a*y_1 - a*y_0 = 1
-    #      a(FADE BEGIN - y_0) = 1
-    # (4) a = 1/(y_1 - y_0);
+    # (1) range[1] = a*ys[1] + b
+    # (2) range[0] = a*ys[0] + b
+    # (3) b = range[0] - a*ys[0]     => (subs 4) => b = -ys[0] / (ys[1] * ys[0]);
+    #     -a ys[0] = b - range[0]
+    #     b = -a ys[0] + range[0] (subs 1)
+    #     range[1] = a*ys[1] - a ys[0] + range[0]
+    #     a*ys[1] - a*ys[0] = range[1] - range[0]
+    #     a(ys[1] - ys[0]) = range[1] - range[0]
+    # (4) a = (range[1] - range[0]) / (ys[1] - ys[0]);
+    # (5) b = range[0] - ys[0]*(range[1] - range[0]) / (ys[1] - ys[0])
 
-    computeTransformValue: ->
-      if @elIsOnTop()
-        [y_0, y_1] = @top_offsets
-      else if @elIsOnBottom()
-        [y_0, y_1] = @bottom_offsets
-      else # is not on screen
-        undefined
-
-      a = 1 / (y_1 - y_0)
+    computeTransformValue: (ys, range) ->
+      a = (range[1] - range[0]) / (ys[1] - ys[0])
       x = @getCurrentElOffset().center
-      b = -y_0 / (y_1 - y_0)
+      b = range[0] - (ys[0]*(range[1] - range[0]) / (ys[1] - ys[0]))
       y = a * x + b
 
-      Math.min (Math.max y, 0), 1
+      Math.min (Math.max y, range[0]), range[1]
 
     getCurrentElOffset: ->
       bounds = $(@el).get(0).getBoundingClientRect()
       $.extend bounds, { center: (bounds.top + bounds.bottom) / 2 }
 
     elIsOnTop: ->
-       0                      <= @getCurrentElOffset().bottom < $(window).height() / 2
+       @getCurrentElOffset().bottom >= 0 &&
+       @getCurrentElOffset().center < $(window).height() / 2
 
     elIsOnBottom: ->
-       $(window).height() / 2 <= @getCurrentElOffset().top    <= $(window).height()
+       @getCurrentElOffset().center >= $(window).height() / 2 &&
+       @getCurrentElOffset().top <= $(window).height()
 
   # Plugin wrapper preventing against multiple instantiations.
   $.fn.animateOnScroll = (options) ->
