@@ -111,8 +111,10 @@ http://github.com/psteiger/animate-on-scroll
 
 ## Do you use this library?
 
-Please contact us so we display your website here!
+Please contact me (mailto:psteiger@gmail.com) so we display your website here!
 
 ## Please donate!
+
+This software's free and forever will be. If you like it, please consider donating any amount you like.
 
 [![](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=582TYZ3KV2JWW)

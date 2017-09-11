@@ -1,6 +1,6 @@
 {
   "name": "animate-on-scroll",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "JQuery plugin for animating (through CSS) objects as they enter or leave the screen.",
   "main": "assets/javascript/animate-on-scroll.js",
   "repository": {
