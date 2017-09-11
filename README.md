@@ -108,3 +108,11 @@ All supported options and respective defaults:
 https://www.npmjs.com/package/animate-on-scroll
 
 http://github.com/psteiger/animate-on-scroll
+
+## Do you use this library?
+
+Please contact us so we display your website here!
+
+## Please donate!
+
+[![](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=582TYZ3KV2JWW)
