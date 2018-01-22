@@ -4,30 +4,19 @@ JQuery plugin for animating objects as they enter or leave the screen.
 
 Animate-on-scroll is designed for simplicity, flexibility and extendibility
 
-'fade' and 'scale3d' animations are currently supported by default, but you can
-easily extend that!
+'fade' and 'scale3d' animations are currently supported, but you can
+easily extend that to whatever CSS animations you like!
 
-## See for yourself
+The only prerequisite for extending this plugin is that the function
+must accept two parameters: the element, and the transform value.
 
-http://www.bitbahia.com.br/
+See source code for more details.
 
 ## Install
 
 ### npm -- a JavaScript package manager
 
     npm install animate-on-scroll
-
-### Ruby on Rails Gem
-
-(Warning! Not implemented yet.)
-
-Setup your Gemfile:
-
-    gem 'animate-on-scroll'
-
-Install it:
-
-    bundle
 
 ## Use examples
 
